@@ -1,9 +1,10 @@
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
 import twitter4j.GeoLocation;
 import twitter4j.Query;
@@ -12,19 +13,23 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.TwitterObjectFactory;
 import twitter4j.conf.ConfigurationBuilder;
-import twitter4j.json.DataObjectFactory;
 
 public class Main {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException, IOException {
 		
-	    ConfigurationBuilder cb = new ConfigurationBuilder();
-	    cb.setDebugEnabled(true).setOAuthConsumerKey("4A2NJHJrzD3eCtzitoJyqxDFe")
-	            .setOAuthConsumerSecret("8QO7CenBz2oKrMqn6J20PjcqgyvMEAlwx5KcvkvpcAHoyTLHIQ")
-	            .setOAuthAccessToken("231861677-DKJX2lNpGwIoDhl8ytt34WccOOSiWknypeqk4QJJ")
-	            .setOAuthAccessTokenSecret("fcIyyqBaq2mGkPZQlZm7ppgIwoioOWJbASNN0Twl6JOYO");
-	    cb.setJSONStoreEnabled(true);
+		Properties prop = new Properties();
+		prop.load(new FileInputStream("twitter.properties"));
+		
+		ConfigurationBuilder cb = new ConfigurationBuilder();
+		cb.setOAuthConsumerKey(prop.getProperty("CONSUMER_KEY"));
+		cb.setOAuthConsumerSecret(prop.getProperty("CONSUMER_SECRET"));
+		cb.setOAuthAccessToken(prop.getProperty("ACCESS_TOKEN"));
+		cb.setOAuthAccessTokenSecret(prop.getProperty("ACCESS_TOKEN_SECRET"));
+		cb.setJSONStoreEnabled(true);
+		cb.setIncludeEntitiesEnabled(true);
 	    
         Twitter twitter = new TwitterFactory(cb.build()).getInstance();
 	        
@@ -37,11 +42,12 @@ public class Main {
         	result = twitter.search(query);
     		List<Status> tweets = result.getTweets();
     		for (Status tweet : tweets) {
-    			String json = DataObjectFactory.getRawJSON(tweet);
+    			String json = TwitterObjectFactory.getRawJSON(tweet);
     			System.out.println(json);
     	        out.write(json+"\n");
     	        lastID = tweet.getId();
     		}
+    		/*
         	int queryLimit = 1;
         	do {
         		query.sinceId(lastID);
@@ -54,6 +60,7 @@ public class Main {
         	        lastID = tweet.getId();
         		}
         	} while ((query = result.nextQuery()) != null || ++queryLimit < 450);
+        	*/
         	out.close();
         	System.exit(0);
         } catch (TwitterException te) {
@@ -61,5 +68,5 @@ public class Main {
         	System.out.println("Failed to search tweets: " + te.getMessage());
         	System.exit(-1);
         } catch (Exception e){}
-    }
+	}
 }

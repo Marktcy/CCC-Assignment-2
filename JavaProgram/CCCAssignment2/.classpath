@@ -2,17 +2,18 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="C:/Users/Mtcy/Downloads/couchdb4j-master/couchdb4j-master/lib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mtcy/Downloads/couchdb4j-master/couchdb4j-master/lib/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mtcy/Downloads/couchdb4j-master/couchdb4j-master/lib/commons-collections.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mtcy/Downloads/couchdb4j-master/couchdb4j-master/lib/commons-lang.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mtcy/Downloads/couchdb4j-master/couchdb4j-master/lib/commons-logging-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mtcy/Downloads/couchdb4j-master/couchdb4j-master/lib/ezmorph-1.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mtcy/Downloads/couchdb4j-master/couchdb4j-master/lib/httpclient-4.0-beta2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mtcy/Downloads/couchdb4j-master/couchdb4j-master/lib/httpcore-4.0-beta2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mtcy/Downloads/couchdb4j-0.1.2.jar"/>
 	<classpathentry kind="lib" path="C:/twitter4j-4.0.4/lib/twitter4j-core-4.0.4.jar"/>
-	<classpathentry kind="lib" path="C:/twitter4j-4.0.4/lib/twitter4j-examples-4.0.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mtcy/workspace/CCCAssignment2/lib/commons-beanutils.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mtcy/workspace/CCCAssignment2/lib/commons-codec-1.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mtcy/workspace/CCCAssignment2/lib/commons-collections.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mtcy/workspace/CCCAssignment2/lib/commons-lang.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mtcy/workspace/CCCAssignment2/lib/commons-logging-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mtcy/workspace/CCCAssignment2/lib/couchdb4j-0.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mtcy/workspace/CCCAssignment2/lib/ezmorph-1.0.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mtcy/workspace/CCCAssignment2/lib/httpclient-4.0-beta2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mtcy/workspace/CCCAssignment2/lib/httpcore-4.0-beta2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mtcy/workspace/CCCAssignment2/lib/json-lib-2.2.3-MODIFIED-jdk15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mtcy/workspace/CCCAssignment2/lib/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mtcy/Downloads/couchdb4j-master/couchdb4j-master/lib/json-lib-2.2.3-MODIFIED-jdk15.jar"/>
+	<classpathentry kind="lib" path="C:/twitter4j-4.0.4/lib/twitter4j-stream-4.0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
