@@ -76,7 +76,9 @@ public class NectarMain implements Closeable{
 	    			String volumeName = scanner.nextLine();
 	    			System.out.print("Please provide instance name : ");
 	    			String instanceName = scanner.nextLine();
-	    			jcloudsNova.attachVolume(volumeName, instanceName);break;
+	    			System.out.print("Please provide device name : ");
+	    			String device = scanner.nextLine();
+	    			jcloudsNova.attachVolume(volumeName, instanceName, device);break;
 	    		case 5: jcloudsNova.listServers();break;
 	    		case 0: jcloudsNova.close(); scanner.close(); break;
     		};
@@ -128,7 +130,10 @@ public class NectarMain implements Closeable{
 	            keypairApi.createWithPublicKey(name, line);
 	        } catch (IOException e) {
 	            System.out.println("ERROR:Given file path is not valid.");
-	        } finally {
+	        } catch (Exception e){
+	        	System.out.println("This key name have been use. Please try again");
+	        }finally {
+	        	System.out.println("Key pair successfully create. Back to main menu.");
 	            br.close();
 	        }
     	}
@@ -136,53 +141,67 @@ public class NectarMain implements Closeable{
     
     //Instance creation based on insatance name and key pair name
     private void createInstance(String instanceName, String keypair){
-    	for (String region : regions) {
-	        ServerApi serverApi = novaApi.getServerApi(region);
-	        String imageId = "18bba5e4-d266-4209-9dde-2336465f0384";	//default Ubuntu 16.04
-	        String flavorId = "1";
-	        
-	        //Default setting for security group and availabity zone
-	        CreateServerOptions options = CreateServerOptions.Builder
-	                .keyPairName(keypair).securityGroupNames("default","ssh","TCP").availabilityZone("melbourne-np");
-	        ServerCreated ser = serverApi.create(instanceName, imageId, flavorId, options);
-	
-	        Server server = serverApi.get(ser.getId());
-	        while(server.getStatus().value().equals("ACTIVE") == false) {
-	            try {
-	                Thread.sleep(1000);
-	            }catch (InterruptedException ex) {}
-	            server = serverApi.get(ser.getId());
-	        }
+    	try{
+    		for (String region : regions) {
+    	        ServerApi serverApi = novaApi.getServerApi(region);
+    	        String imageId = "18bba5e4-d266-4209-9dde-2336465f0384";	//default Ubuntu 16.04
+    	        String flavorId = "1";
+    	        
+    	        //Default setting for security group and availabity zone
+    	        CreateServerOptions options = CreateServerOptions.Builder
+    	                .keyPairName(keypair).securityGroupNames("default","ssh","TCP")
+    	                .availabilityZone("melbourne-np");
+    	        ServerCreated ser = serverApi.create(instanceName, imageId, flavorId, options);
+    	
+    	        Server server = serverApi.get(ser.getId());
+    	        while(server.getStatus().value().equals("ACTIVE") == false) {
+    	            try {
+    	                Thread.sleep(1000);
+    	            }catch (InterruptedException ex) {}
+    	            server = serverApi.get(ser.getId());
+    	        }
+        	}
+    	}catch(Exception e){
+    		System.out.println("Fail creation. Please check the instance size or instance name.");
+    		System.out.println("Or if the keypair doesn't exist.");
     	}
+    	System.out.println("Instance successfully create. Back to main menu.");
     }
     
     //Create new volume to attach to the instance
     //Using value of system size and volume name
     private void createVolume(int size, String name) {
-    	for (String region : regions) {
-    		VolumeApi volumeApi = this.cinderApi.getVolumeApi(region);
-    		CreateVolumeOptions options = CreateVolumeOptions.Builder.name(name)
-    	    		.availabilityZone("melbourne-np").volumeType("melbourne");
-
-            Volume vol = volumeApi.create(size, options);
-         }
+    	try{
+    		for (String region : regions) {
+	    		VolumeApi volumeApi = this.cinderApi.getVolumeApi(region);
+	    		CreateVolumeOptions options = CreateVolumeOptions.Builder.name(name)
+	    	    		.availabilityZone("melbourne-np").volumeType("melbourne");
+	
+	            Volume vol = volumeApi.create(size, options);
+    		}
+    	}catch(Exception e){
+    		System.out.println("Fail creation. Please check the volume size or volume name.");
+    		System.out.println("Or if the keypair doesn't exist.");
+    	}
+    	System.out.println("Volume successfully create. Back to main menu.");
     }
     
     //Attach volume with parameter of volume name and instance name
     //Default partion name of "/dev/vdc"
-    private void attachVolume(String volume, String server) {
-        this.attachVolume(volume, server, "/dev/vdc");
-    }
-    
     //Volume Attachment
-    public void attachVolume(String volume, String server, String device) {
-    	for (String region : regions) {
-	        if (device == null)
-	            device = "";
-	        VolumeAttachmentApi volumeAttachmentApi = this.novaApi.getVolumeAttachmentApi(region).get();
-	        volumeAttachmentApi.attachVolumeToServerAsDevice(
-	                this.getVolumeId(volume), this.getServerId(server), device);
+    private void attachVolume(String volume, String server, String device) {
+    	try{
+	    	for (String region : regions) {
+		        if (device == null)
+		            device = "/dev/vdc";
+		        VolumeAttachmentApi volumeAttachmentApi = this.novaApi.getVolumeAttachmentApi(region).get();
+		        volumeAttachmentApi.attachVolumeToServerAsDevice(
+		                this.getVolumeId(volume), this.getServerId(server), device);
+	    	}
+    	}catch(Exception e){
+    		System.out.println("Attached fail. Please check again.");
     	}
+    	System.out.println("Volume successfully attached. Back to main menu.");
     }
     
     //Retrieve volume id based on volume name for volume attachment
@@ -220,7 +239,7 @@ public class NectarMain implements Closeable{
     private void listServers() {
         for (String region : regions) {
             ServerApi serverApi = novaApi.getServerApi(region);
-            System.out.println("Servers in " + region);
+            System.out.println("Instances in " + region);
 
             for (Server server : serverApi.listInDetail().concat()){
                 System.out.println("  " + server);
