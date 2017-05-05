@@ -1,6 +1,6 @@
 /****************************************************
  * COMP90024 Cluster and Cloud Computing Project 2	*
- * File : NectarMain.java							*
+ * File : Main.java							*
  * Author : CCC2017 - Team26						*
  * City : Melbourne									*
  * Member : Shixun Liu, 766799						*
@@ -24,7 +24,7 @@ public class Main {
 	CouchDbClient dbClientMel, dbClientSyd, dbClientBri, dbClientPer, dbClientAde;
 	
 	//Main initialization for twitter and couchdb client
-	public Main(String ip){
+	public Main(){
 		try {
 			prop.load(new FileInputStream("twitter.properties"));
  
@@ -38,11 +38,11 @@ public class Main {
  
 			twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
 			
-			dbClientMel = new CouchDbClient("twittermel", true, "http", ip, 5984, "admin", "password");
-            dbClientSyd = new CouchDbClient("twittersyd", true, "http", ip, 5984, "admin", "password");
-            dbClientBri = new CouchDbClient("twitterbri", true, "http", ip, 5984, "admin", "password");
-            dbClientPer = new CouchDbClient("twitterper", true, "http", ip, 5984, "admin", "password");
-            dbClientAde = new CouchDbClient("twitterade", true, "http", ip, 5984, "admin", "password");
+			dbClientMel = new CouchDbClient("twittermelStream", true, "http", "127.0.0.1", 5984, "admin", "password");
+            dbClientSyd = new CouchDbClient("twittersydStream", true, "http", "127.0.0.1", 5984, "admin", "password");
+            dbClientBri = new CouchDbClient("twitterbriStream", true, "http", "127.0.0.1", 5984, "admin", "password");
+            dbClientPer = new CouchDbClient("twitterperStream", true, "http", "127.0.0.1", 5984, "admin", "password");
+            dbClientAde = new CouchDbClient("twitteradeStream", true, "http", "127.0.0.1", 5984, "admin", "password");
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -106,7 +106,7 @@ public class Main {
 	};
  
 	public static void main(String[] args) throws InterruptedException {
-		Main twitter = new Main(args[1]);
+		Main twitter = new Main();
 		twitter.startTwitter();
 	}
 }
