@@ -1,0 +1,4 @@
+Octopus900 IP:172.16.42.32
+Octopus900 Port:49153
+OctopusServer IP:localhost
+OctopusServer Port:50001
