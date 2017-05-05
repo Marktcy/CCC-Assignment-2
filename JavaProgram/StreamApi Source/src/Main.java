@@ -75,15 +75,14 @@ public class Main {
 		//Retrieve json data from tweets
 		public void onStatus(Status status) {
 			JsonParser parser = new JsonParser();
-			JsonObject o = (JsonObject)parser.parse(TwitterObjectFactory.getRawJSON(status));
         	JsonObject tweetDetail = (JsonObject) parser.parse(TwitterObjectFactory.getRawJSON(status));
 			JsonObject place = (JsonObject) tweetDetail.get("place");
 			String placeName = place.get("full_name").getAsString();
 			
 			JsonObject object = new JsonObject();
-			object.addProperty("_id", ""+status.getId());
+			object.addProperty("_id", Long.toString(status.getId()));
 			object.addProperty("rev", "3");
-			object.add("json",o);
+			object.add("json",(JsonObject)parser.parse(TwitterObjectFactory.getRawJSON(status)));
 			
 			//Compare and store only if is within five of our require location
 			if(placeName.contains("Melbourne")){
