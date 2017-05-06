@@ -46,6 +46,7 @@ public class NectarMain implements Closeable{
     		System.out.println("3. Create Volume.");
     		System.out.println("4. Attach Volume to instance.");
     		System.out.println("5. List instance.");
+    		System.out.println("6. Auto creation.");
     		System.out.println("0. Exit.");
     		System.out.print("Please provide your options : ");
     		
@@ -76,10 +77,10 @@ public class NectarMain implements Closeable{
 	    			String volumeName = scanner.nextLine();
 	    			System.out.print("Please provide instance name : ");
 	    			String instanceName = scanner.nextLine();
-	    			System.out.print("Please provide device name : ");
-	    			String device = scanner.nextLine();
-	    			jcloudsNova.attachVolume(volumeName, instanceName, device);break;
+	    			jcloudsNova.attachVolume(volumeName, instanceName);
+	    			break;
 	    		case 5: jcloudsNova.listServers();break;
+	    		case 6: jcloudsNova.autoCreate();break;
 	    		case 0: jcloudsNova.close(); scanner.close(); break;
     		};
     		
@@ -115,7 +116,7 @@ public class NectarMain implements Closeable{
     }
 
     //Keypair creation for ssh use
-    private void createKeyPair(String name, String path) throws IOException {
+    private void createKeyPair(String name, String path) {
     	for (String region : regions) {
 	        KeyPairApi keypairApi = this.novaApi.getKeyPairApi(region).get();
 	        BufferedReader br = null;
@@ -133,8 +134,12 @@ public class NectarMain implements Closeable{
 	        } catch (Exception e){
 	        	System.out.println("This key name have been use. Please try again");
 	        }finally {
-	        	System.out.println("Key pair successfully create. Back to main menu.");
-	            br.close();
+	        	System.out.println("Key pair successfully create.");
+	            try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 	        }
     	}
     }
@@ -165,7 +170,7 @@ public class NectarMain implements Closeable{
     		System.out.println("Fail creation. Please check the instance size or instance name.");
     		System.out.println("Or if the keypair doesn't exist.");
     	}
-    	System.out.println("Instance successfully create. Back to main menu.");
+    	System.out.println("Instance successfully create.");
     }
     
     //Create new volume to attach to the instance
@@ -183,25 +188,25 @@ public class NectarMain implements Closeable{
     		System.out.println("Fail creation. Please check the volume size or volume name.");
     		System.out.println("Or if the keypair doesn't exist.");
     	}
-    	System.out.println("Volume successfully create. Back to main menu.");
+    	System.out.println("Volume successfully create.");
     }
     
     //Attach volume with parameter of volume name and instance name
     //Default partion name of "/dev/vdc"
-    //Volume Attachment
-    private void attachVolume(String volume, String server, String device) {
+    //Volume Attachment4
+    private void attachVolume(String volume, String server) {
     	try{
-	    	for (String region : regions) {
-		        if (device == null)
-		            device = "/dev/vdc";
+    		for (String region : regions) {
 		        VolumeAttachmentApi volumeAttachmentApi = this.novaApi.getVolumeAttachmentApi(region).get();
 		        volumeAttachmentApi.attachVolumeToServerAsDevice(
-		                this.getVolumeId(volume), this.getServerId(server), device);
+		                this.getVolumeId(volume), this.getServerId(server), "/dev/vdc");
+		        String temp = (volumeAttachmentApi.getAttachmentForVolumeOnServer( this.getVolumeId(volume), this.getServerId(server)).getDevice());
+		        System.out.println(volume + " attached to device : " + temp + "in" + server);
 	    	}
+	    	System.out.println("Volume successfully attached.");
     	}catch(Exception e){
     		System.out.println("Attached fail. Please check again.");
     	}
-    	System.out.println("Volume successfully attached. Back to main menu.");
     }
     
     //Retrieve volume id based on volume name for volume attachment
@@ -242,9 +247,37 @@ public class NectarMain implements Closeable{
             System.out.println("Instances in " + region);
 
             for (Server server : serverApi.listInDetail().concat()){
-                System.out.println("  " + server);
+            	System.out.println("   Name : " + server.getName() + " IP : " + server.getAccessIPv4());
+                System.out.println("   Full Detail : " + server);
             }
         }
+    }
+    
+    //One click auto creation for project purpose
+    private void autoCreate(){
+    	System.out.println("Creating Private key pair");
+    	createKeyPair("PrivateKey", "cloud.key.pub");
+    	
+    	System.out.println("Creating Four instance");
+    	createInstance("InstanceOne", "PrivateKey");
+    	createInstance("InstanceTwo", "PrivateKey");
+    	createInstance("InstanceThree", "PrivateKey");
+    	createInstance("InstanceFour", "PrivateKey");
+    	
+    	System.out.println("Creating Four Volume");
+		createVolume(60, "VolOne");
+		createVolume(60, "VolTwo");
+		createVolume(60, "VolThree");
+		createVolume(60, "VolFour");
+		
+		System.out.println("Attached Four Volume to Four Instance");
+		attachVolume("VolOne", "InstanceOne");
+		attachVolume("VolTwo", "InstanceTwo");
+		attachVolume("VolThree", "InstanceThree");
+		attachVolume("VolFour", "InstanceFour");
+		
+		System.out.println("Finish creation.");
+		listServers();
     }
     
     //Close the cloud handling section
