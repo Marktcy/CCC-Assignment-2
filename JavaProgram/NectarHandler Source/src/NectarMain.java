@@ -15,10 +15,12 @@ import java.util.*;
 import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.cinder.v1.CinderApi;
+import org.jclouds.openstack.cinder.v1.CinderApiMetadata;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
+import org.jclouds.openstack.nova.v2_0.NovaApiMetadata;
 import org.jclouds.openstack.nova.v2_0.domain.*;
 import org.jclouds.openstack.nova.v2_0.extensions.*;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
@@ -97,7 +99,7 @@ public class NectarMain implements Closeable{
 	        String credential = "Yzg2YWZjM2RhZmJmM2Mx";							//token password
 	
 	        //Token authentication for nova api
-	        novaApi = ContextBuilder.newBuilder(provider)
+	        novaApi = ContextBuilder.newBuilder(new NovaApiMetadata())
 	                .endpoint("https://keystone.rc.nectar.org.au:5000/v2.0/")	//endpoint url
 	                .credentials(identity, credential)
 	                .modules(modules)
@@ -105,7 +107,7 @@ public class NectarMain implements Closeable{
 	        regions = novaApi.getConfiguredRegions();
 	        
 	        //Token authentication for cinder api
-	        cinderApi = ContextBuilder.newBuilder("openstack-cinder")
+	        cinderApi = ContextBuilder.newBuilder(new CinderApiMetadata())
 	                .endpoint("https://keystone.rc.nectar.org.au:5000/v2.0/")	//endpoint url
 	                .credentials(identity, credential)
 	                .modules(modules)
@@ -166,11 +168,11 @@ public class NectarMain implements Closeable{
     	            server = serverApi.get(ser.getId());
     	        }
         	}
+    		System.out.println("Instance successfully create.");
     	}catch(Exception e){
     		System.out.println("Fail creation. Please check the instance size or instance name.");
     		System.out.println("Or if the keypair doesn't exist.");
     	}
-    	System.out.println("Instance successfully create.");
     }
     
     //Create new volume to attach to the instance
@@ -184,16 +186,15 @@ public class NectarMain implements Closeable{
 	
 	            Volume vol = volumeApi.create(size, options);
     		}
+    		System.out.println("Volume successfully create.");
     	}catch(Exception e){
     		System.out.println("Fail creation. Please check the volume size or volume name.");
-    		System.out.println("Or if the keypair doesn't exist.");
     	}
-    	System.out.println("Volume successfully create.");
     }
     
     //Attach volume with parameter of volume name and instance name
     //Default partion name of "/dev/vdc"
-    //Volume Attachment4
+    //Volume Attachment
     private void attachVolume(String volume, String server) {
     	try{
     		for (String region : regions) {
