@@ -9,3 +9,6 @@ coordinates: [longitude, latitude]</br>
 sentiment: POSITIVE, NEGATIVE, NEUTRAL 这三种感情中的一种，在java中使用的是enum，做统计的话，无需担心大小写等问题</br>
 这四种数据，由逗号统一隔开，方便parse or regex.</br>
 
+-----updated
+filterADE.txt data format:
+"642659303489445888",,Foursquare,"Sat Sep 12 11:21:32 +0000 2015",(138.600502,-34.85254),NEUTRAL
