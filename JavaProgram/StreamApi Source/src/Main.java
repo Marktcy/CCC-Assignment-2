@@ -38,11 +38,11 @@ public class Main {
  
 			twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
 			
-			dbClientMel = new CouchDbClient("twittermelStream", true, "http", "127.0.0.1", 5984, "admin", "password");
-            dbClientSyd = new CouchDbClient("twittersydStream", true, "http", "127.0.0.1", 5984, "admin", "password");
-            dbClientBri = new CouchDbClient("twitterbriStream", true, "http", "127.0.0.1", 5984, "admin", "password");
-            dbClientPer = new CouchDbClient("twitterperStream", true, "http", "127.0.0.1", 5984, "admin", "password");
-            dbClientAde = new CouchDbClient("twitteradeStream", true, "http", "127.0.0.1", 5984, "admin", "password");
+			dbClientMel = new CouchDbClient("twittermel", true, "http", "127.0.0.1", 5984, "admin", "password");
+            dbClientSyd = new CouchDbClient("twittersyd", true, "http", "127.0.0.1", 5984, "admin", "password");
+            dbClientBri = new CouchDbClient("twitterbri", true, "http", "127.0.0.1", 5984, "admin", "password");
+            dbClientPer = new CouchDbClient("twitterper", true, "http", "127.0.0.1", 5984, "admin", "password");
+            dbClientAde = new CouchDbClient("twitterade", true, "http", "127.0.0.1", 5984, "admin", "password");
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
