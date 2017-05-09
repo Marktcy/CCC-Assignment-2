@@ -157,7 +157,7 @@ public class NectarMain implements Closeable{
     	        //Default setting for security group and availabity zone
     	        CreateServerOptions options = CreateServerOptions.Builder
     	                .keyPairName(keypair).securityGroupNames("default","ssh","TCP")
-    	                .availabilityZone("melbourne-np");
+    	                .availabilityZone("NCI");
     	        ServerCreated ser = serverApi.create(instanceName, imageId, flavorId, options);
     	
     	        Server server = serverApi.get(ser.getId());

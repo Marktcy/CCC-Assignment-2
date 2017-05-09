@@ -27,7 +27,7 @@ public class CollectTwitter {
 	ArrayList<TwitterDev> twitterAccountList = null;
 	CouchDbClient dbClient = null;
 	JsonParser parser = new JsonParser();
-	
+
 	public static void main(String[] args) {
 		if (args.length != 1) {
             System.err.println("Usage: required location name : (melbourne/sydney/adelaide/perth/brisbane)");
