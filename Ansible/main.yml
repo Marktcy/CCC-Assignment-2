@@ -1,0 +1,154 @@
+---
+- hosts: main slave
+  remote_user: ubuntu
+  become: true
+
+  vars:
+    location: [ 'twittermel', 'twittersyd', 'twitterbri', 'twitterper', 'twitterade']
+    folder: ['/mnt/couchdb_data', '/mnt/couchdb_view']
+    couchdbdir: ['database_dir', 'view_index_dir']
+  tasks:
+   - wait_for:
+      host: "{{ inventory_hostname }}"
+      port: 22
+      delay: 10
+
+   - name: insall vim curl and unzip
+     apt: name={{ item }} state=latest update_cache=yes
+     sudo: yes
+     with_items:
+      - vim
+      - curl
+      - unzip
+
+   - name: download-couchdb
+     get_url:
+       url: https://raw.githubusercontent.com/afiskon/install-couchdb/master/install-couchdb.sh
+       dest: /home/ubuntu
+
+   - name: install couchdb
+     command: sh install-couchdb.sh
+
+   - name: modify local.ini
+     lineinfile:
+      path: /home/couchdb/etc/local.ini
+      insertafter: "{{ item.insertafter }}"
+      line: "{{ item.line }}"
+     with_items:
+        - { insertafter: '\[chttpd]', line: 'bind_address = 0.0.0.0' }
+        - { insertafter: '\[chttpd]', line: 'port = 5984' }
+        - { insertafter: '\[httpd]', line: 'replace' }
+        - { insertafter: '\[admin]', line: 'admin = password' }
+
+   - name: modify local.ini, replace the content under [httpd]
+     lineinfile:
+      path: /home/couchdb/etc/local.ini
+      regexp: 'replace'
+      line: 'bind_address = 0.0.0.0'
+
+   - name: modify vm.args
+     lineinfile:
+      path: /home/couchdb/etc/vm.args
+      regexp: '-name couchdb@localhost'
+      line: "-name couchdb@{{ inventory_hostname }}"
+
+   - name: modify sys.config
+     lineinfile:
+      path: /home/couchdb/releases/2.0.0/sys.config
+      regexp: '\[]\.'
+      line: >
+            [
+              {lager, [
+                  {error_logger_hwm, 1000},
+                  {error_logger_redirect, true},
+                  {handlers, [
+                      {lager_console_backend, [debug, {
+                          lager_default_formatter,
+                          [
+                              date, " ", time,
+                              " [", severity, "] ",
+                              node, " ", pid, " ",
+                              message,
+                              "\n"
+                          ]
+                      }]}
+                  ]},
+                  {inet_dist_listen_min, 9100},
+                  {inet_dist_listen_max, 9200}
+              ]}
+            ].
+
+   - name: modify local.ini
+     lineinfile:
+      path: /home/couchdb/etc/local.ini
+      insertafter: '\[couchdb]'
+      line:  "{{ item.0 }} = {{ item.1 }}"
+     with_together:
+        - "{{ couchdbdir }}"
+        - "{{ folder }}"
+
+   - name: create couchdb folder under /mnt
+     file: path={{ item }} state=directory
+     with_items: "{{ folder }}"
+
+   - name: enable the authority
+     shell: chown -R couchdb:couchdb {{ item }}
+     with_items: "{{ folder }}"
+
+   - name: restart couchdb
+     shell: sv restart couchdb
+
+   - name: add node to create cluster
+     shell: curl -X PUT "http://admin:password@127.0.0.1:5986/_nodes/couchdb@{{ item }}" -d {}
+     with_items: "{{ groups['slave'] }}"
+     when:  inventory_hostname in groups['main']
+
+   - name: create database
+     shell: curl -X PUT http://admin:password@127.0.0.1:5984/{{ item }}
+     with_items: "{{ location }}"
+     when: inventory_hostname in groups['main']
+
+   # install Java
+   - name: Add Java repository to
+     action: apt_repository repo='ppa:webupd8team/java'
+
+   - name: Autoaccept license for Java
+     shell: echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+
+   - name: Update APT package cache
+     apt: update_cache=yes
+
+   - name: Install Java 8
+     apt: pkg=oracle-java8-installer state=latest install_recommends=yes
+
+   - name: Set Java 8 Env
+     apt: pkg=oracle-java8-set-default state=latest install_recommends=yes
+
+   #Downlaod Tomcat for Web application
+   - name: download tomcat
+     get_url:
+       url: http://mirror.intergrid.com.au/apache/tomcat/tomcat-9/v9.0.0.M20/bin/apache-tomcat-9.0.0.M20.zip
+       dest: /home/ubuntu
+     when: inventory_hostname in groups['main']
+   - name: unzip tomcat
+     shell: unzip apache-tomcat-9.0.0.M20.zip
+     when: inventory_hostname in groups['main']
+
+   # install xampp in main instance
+   - name: download xampp
+     get_url:
+      url: https://www.apachefriends.org/xampp-files/5.6.30/xampp-linux-x64-5.6.30-1-installer.run
+      dest: /home/ubuntu
+     when: inventory_hostname in groups['main']
+
+   - name: change the permissions to the installer
+     shell: chmod 755 xampp-linux-*-installer.run
+     when: inventory_hostname in groups['main']
+
+   - name: run the installer
+     shell: ./xampp-linux-*-installer.run
+     when: inventory_hostname in groups['main']
+
+   - name: start the xampp
+     shell: /opt/lampp/lampp start
+     when: inventory_hostname in groups['main']
