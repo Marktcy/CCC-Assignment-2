@@ -1,10 +1,15 @@
 # CCC-Assignment-2
 Cluster and Cloud Computing Assignment 2
 We are Team 26, and our team member have:
+
 	Shixun Liu, 766799
+	
 	Yuan Bing, 350274
+	
 	Renyi Hou, 764696
+	
 	Mark Chun Yong Ting, 805780
+	
 	Kaiqing Wang, 700275
 
 The file included here divided into few sub folder:
