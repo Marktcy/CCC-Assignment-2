@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>
+		MAP
+		</title>
+		<!--Stylesheets -->
+		<link rel="stylesheet" href="assets/lib/leaflet/leaflet.css" />
+		<script src="assets/lib/leaflet/leaflet.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="assets/data/greatMelbourne.json"></script>
+		<script src="assets/data/Pollingall2totalcount.json"></script>
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/data.js"></script>
+		<script src="http://sashakavun.github.io/leaflet-canvasicon/leaflet-canvasicon.js"></script>
+		<script type="text/javascript" src="leaflet-piechart.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<style type="text/css">
+			#map { width: 1600px;
+			height: 600px; }
+		</style>
+			<style>#    { width: 1600px; height: 800px; }
+			.info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
+			.legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }</style>
+	</head>
+	<body>
+		<h1></h1>
+		<div id="map"></div>
+	
+		<script>
+			var map = L.map('map').setView([37.8, -96], 6);
+		
+			//add basemap
+			L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+			
+			
+			function getColor(d) {
+				return d > 50 ? '#800026' :
+					d > 40 ? '#BD0026' :
+					d > 30? '#E31A1C' :
+					d > 20 ? '#FC4E2A' :
+					d > 10   ? '#FD8D3C' :
+					d > 5   ? '#FEB24C' :
+					d > 2  ? '#FED976' :
+							'#FFEDA0';
+			}
+	
+			
+			//creating style
+			function style(feature) {
+				return {
+					weight: 2,
+					opacity: 1,
+					color: 'White',
+					dashArray: '3',
+					fillOpacity: 0.7,
+					fillColor: getColor(feature.properties.d599_)
+				};
+			}
+
+			function highlightFeature(e) {
+				var layer = e.target;
+
+				layer.setStyle({
+					weight: 5,
+					color: '#666',
+					dashArray: '',
+					fillOpacity: 0.7
+				});
+
+				if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+				layer.bringToFront();
+				}
+
+				info.update(layer.feature.properties);
+				window.onload(layer.feature.properties);
+			}
+			
+			var MelbourneLayer;
+
+
+			function resetHighlight(e) {
+				MelbourneLayer.resetStyle(e.target);
+				info.update();
+				window.onload();			}
+			
+			function zoomToFeature(e) {
+				map.fitBounds(e.target.getBounds());
+			}
+
+			function onEachFeature(feature, layer) {
+				layer.on({
+				mouseover: highlightFeature,
+				mouseout: resetHighlight,
+				click: zoomToFeature
+				});
+			}
+			
+			MelbourneLayer = L.geoJson(data,{style:style,onEachFeature: onEachFeature}).addTo(map);
+
+
+			map.fitBounds(MelbourneLayer.getBounds());
+			
+
+			var info = L.control({position: 'bottomleft'});
+			
+			info.onAdd = function (map) {
+				this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+				this.update();
+				return this._div;
+			};
+			
+			info.update = function (props) {
+				this._div.innerHTML = '<h4>Victoria Suburb Name</h4>' +  (props ?
+				'<b>' + props.pollingpla + '</b><br />' + 'totalcount:' + props.totalcount + '<br /> % home owner:' + props.own_h_  + '<br /> % unemployment rate:' +props.unemploy_ + '<br /> % low income:' + props.d599_
+				
+				+ '<sup></sup>'
+				: 'Hover over a Suburb');
+				
+			};
+
+			info.addTo(map);
+			
+
+			
+			var legend = L.control({position: 'bottomright'});
+
+			legend.onAdd = function (map) {
+
+				var div = L.DomUtil.create('div', 'info legend'),
+					grades = [0, 2, 5, 10, 20, 30, 40, 50],
+					labels = [],
+					from, to;
+
+			for (var i = 0; i < grades.length; i++) {
+				from = grades[i];
+				to = grades[i + 1];
+
+				labels.push(
+				'<i style="background:' + getColor(from + 1) + '"></i> ' +
+				from + (to ? '&ndash;' + to : '+'));
+			}	
+
+			div.innerHTML = labels.join('<br>');
+			return div;
+			};
+
+			legend.addTo(map);
+			
+
+			
+			window.onload = function(props) {
+				Highcharts.chart('container', {
+					chart: {
+						plotBackgroundColor: null,
+						plotBorderWidth: null,
+						plotShadow: false,
+						type: 'pie'
+					},
+					title: {
+						text: 'Resident Sentiment Analysis'
+					},
+					tooltip: {
+						pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+					},
+					plotOptions: {
+						pie: {
+							allowPointSelect: true,
+							cursor: 'pointer',
+							dataLabels: {
+								enabled: true,
+								format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+								style: {
+									color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+								}
+							}
+						}
+					},
+					series: [{
+						name: 'MOOD INDEX',
+						colorByPoint: true,
+						data: [{
+							name: 'positive',
+							y:  props.poscount/(props.totalcount)
+						}, {
+							name: 'Negative',
+							y: props.Negcount/(props.totalcount) ,
+							sliced: true,
+							selected: true
+						}, {
+							name: 'Neutral',
+							y: props.NEUcount/(props.totalcount)
+						}]
+					}]
+				});
+			};
+		
+		</script>
+
+
+		<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+		
+	</body>
+</html>
+

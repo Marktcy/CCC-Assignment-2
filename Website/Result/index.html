@@ -1,0 +1,937 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Team 26 Demo</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	</head>
+	<body>
+<script src="assets/code/highcharts.js"></script>
+<script src="assets/code/modules/exporting.js"></script>
+
+		<!-- Sidebar -->
+			<section id="sidebar">
+				<div class="inner">
+					<nav>
+						<ul>
+							<li><a href="#intro">Welcome</a></li>
+							<li><a href="#one">Analysis Result</a></li>
+							<li><a href="#two">Twitter and Salary</a></li>
+							<li><a href="#three">Twitter and Time</a></li>
+							<li><a href="#four">Twitter and Platform</a></li>
+							<li><a href="#five">Googlemap</a></li>
+						</ul>
+					</nav>
+				</div>
+			</section>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Intro -->
+					<section id="intro" class="wrapper style1 fullscreen fade-up">
+						<div class="inner">
+							<h1>Analysis Result from Team 26</h1>
+							<p align="middle">
+							Kaiqing Wang         700275 <br />
+							Bing Yuan            350274<br />
+							Mark Chun Yong Ting  805780<br />
+							Shixun Liu           766799<br />
+							Renyi Hou            764696<br />
+							</p>
+							<ul class="actions">
+								<li><a href="#one" class="button scrolly">Result</a></li>
+							</ul>
+						</div>
+					</section>
+
+				<!-- One -->
+					<section class="wrapper style2 spotlights">
+
+						<section id="one">
+							<div class="content" id="piechartmel"></div>
+							<div class="content" id="piechartsyd"></div>
+						</section>
+
+						<section>
+							<div class="content" id="piechartade"></div>
+							<div class="content" id="piechartbri"></div>
+						</section>
+
+						<section>
+							<div class="content" id="piechartper"></div>
+							<div class="content">
+								<h3>Result</h3>
+								<p>More than 50% are identified as negative</p>
+								<p>Sydney and Perth are more positive</p>
+							</div>
+							
+						</section>
+
+						<section  id="two">
+							<div class="content" id="linechartGDP"></div>
+							<div>
+                            <br><br>
+								<h3>Result</h3>
+								<p>Residents in Perth earn significantly <br>higher than other 4 cities</p>
+								<p>5 cities has a positive relationship <br>with the average annual income of the residents</p>
+								
+							</div>
+						</section>
+
+						<section id="three">
+							<div class="content" id="linechartau"></div>
+							<div>
+                            <br><br>
+								<h3>Result</h3>
+								<p>People in five cities has similar timetable</p>
+								<p>Least tweets posted in 03:00-06:00 </p>
+								<p>Most tweets posted in 18:00-21:00 </p>
+							</div>
+						</section>
+
+
+                
+						<section id="four">
+							<div class="content" id="piechartplatform"></div>
+							<div class="content" id="piechartsales"></div>
+                            
+						</section>
+                       
+                        <section id="five">
+                        <div class="content">
+                            <h3>Open Street Map</h3>
+                            <p>Map of Melbourne Suburbs</p>
+                            <table >
+                                <tr>
+                                    <td>
+                                         <div id="map"></div>
+                                    </td>
+
+                                    <td style="vertical-align:middle">
+                                        <div id="container" style="min-width: 340px; height: 340px; max-width: 340px; margin: 0 auto"></div>
+                                    </td>
+                                </tr>
+                                
+                            </table>
+                           
+                            
+                            
+                            <ul class="actions">
+                                <li><a href="#" class="button">Top</a></li>
+                            </ul>
+                        </div>
+                    </section>
+
+					</section>
+
+				<!-- Two -->
+
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper style1-alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Team 26</li><li>COMP90024</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/code/highcharts.js"></script>
+			<script src="assets/code/modules/exporting.js"></script>
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+<!-- **************************************************************************-->
+        <link rel="stylesheet" href="assets/lib/leaflet/leaflet.css" />
+        <script src="assets/lib/leaflet/leaflet.js"></script>
+        <script src="assets/data/pollingall2totalcount.json"></script>
+        <style type="text/css">
+            #map { width: 600px;
+            height: 480px; }
+        </style>
+
+            <style>#    { width: 1600px; height: 800px; }
+            .info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: black; box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
+            .legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
+            </style>
+
+
+            <script>
+            var map = L.map('map').setView([37.8, -96], 6);
+        
+            //add basemap
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+            
+            
+            function getColor(d) {
+                return d > 50 ? '#800026' :
+                    d > 40 ? '#BD0026' :
+                    d > 30? '#E31A1C' :
+                    d > 20 ? '#FC4E2A' :
+                    d > 10   ? '#FD8D3C' :
+                    d > 5   ? '#FEB24C' :
+                    d > 2  ? '#FED976' :
+                            '#FFEDA0';
+            }
+    
+            
+            //creating style
+            function style(feature) {
+                return {
+                    weight: 2,
+                    opacity: 1,
+                    color: 'White',
+                    dashArray: '3',
+                    fillOpacity: 0.7,
+                    fillColor: getColor(feature.properties.d599_)
+                };
+            }
+
+            function highlightFeature(e) {
+                var layer = e.target;
+
+                layer.setStyle({
+                    weight: 5,
+                    color: '#666',
+                    dashArray: '',
+                    fillOpacity: 0.7
+                });
+
+                if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                layer.bringToFront();
+                }
+
+                info.update(layer.feature.properties);
+                window.onload(layer.feature.properties);
+            }
+            
+            var MelbourneLayer;
+
+
+            function resetHighlight(e) {
+                MelbourneLayer.resetStyle(e.target);
+                info.update();
+                window.onload();            }
+            
+            function zoomToFeature(e) {
+                map.fitBounds(e.target.getBounds());
+            }
+
+            function onEachFeature(feature, layer) {
+                layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight,
+                click: zoomToFeature
+                });
+            }
+            
+            MelbourneLayer = L.geoJson(data,{style:style,onEachFeature: onEachFeature}).addTo(map);
+
+
+            map.fitBounds(MelbourneLayer.getBounds());
+            
+
+            var info = L.control({position: 'bottomleft'});
+            
+            info.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+                this.update();
+                return this._div;
+            };
+            
+            info.update = function (props) {
+                this._div.innerHTML = '<h4>Victoria Suburb Name</h4>' +  (props ?
+                '<b>' + props.pollingpla + '</b><br />' + 'totalcount:' + props.totalcount + '<br /> % home owner:' + props.own_h_  + '<br /> % unemployment rate:' +props.unemploy_ + '<br /> % low income:' + props.d599_
+                
+                + '<sup></sup>'
+                : 'Hover over a Suburb');
+                
+            };
+
+            info.addTo(map);
+            
+
+            
+            var legend = L.control({position: 'bottomright'});
+
+            legend.onAdd = function (map) {
+
+                var div = L.DomUtil.create('div', 'info legend'),
+                    grades = [0, 2, 5, 10, 20, 30, 40, 50],
+                    labels = [],
+                    from, to;
+
+            for (var i = 0; i < grades.length; i++) {
+                from = grades[i];
+                to = grades[i + 1];
+
+                labels.push(
+                '<i style="background:' + getColor(from + 1) + '"></i> ' +
+                from + (to ? '&ndash;' + to : '+'));
+            }   
+
+            div.innerHTML = labels.join('<br>');
+            return div;
+            };
+
+            legend.addTo(map);
+            
+
+            
+            window.onload = function(props) {
+                Highcharts.chart('container', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Resident Sentiment Analysis'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'MOOD INDEX',
+                        colorByPoint: true,
+                        data: [{
+                            name: 'positive',
+                            y:  props.poscount/(props.totalcount)
+                        }, {
+                            name: 'Negative',
+                            y: props.Negcount/(props.totalcount) ,
+                            sliced: true,
+                            selected: true
+                        }, {
+                            name: 'Neutral',
+                            y: props.NEUcount/(props.totalcount)
+                        }]
+                    }]
+                });
+            };
+        
+        </script>
+
+<!-- Pie Mel -->
+<script type="text/javascript">
+	$(document).ready(function() {
+
+    var options = {
+        chart: {
+        	renderTo: 'piechartmel',
+        	plotBackgroundColor: null,
+        	plotBorderWidth: null,
+        	plotShadow: false,
+        	type: 'pie'
+    	},
+    	title: {
+        	text: 'Sentiment Analysis in Melbourne'
+    	},
+    	tooltip: {
+        	pointFormat: '<b>{point.y}</b>'
+    	},
+    	plotOptions: {
+        	pie: {
+            	allowPointSelect: true,
+            	cursor: 'pointer',
+            	dataLabels: {
+                	enabled: true,
+                	format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                	style: {
+                    	color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                	}
+            	}
+        	}
+    	},
+        series: [{
+        	name: 'Melbourne',
+        	colorByPoint: true,
+        	data: [{
+            	name: 'Positive',
+            	sliced: true,
+            	selected: true
+        	}, {
+            	name: 'Negative',
+        	}, {
+            	name: 'Neutral',
+        	}]
+
+        }]
+    };
+
+    $.ajax({  
+            type: 'GET',  
+        //  async:false,              
+            url: 'http://130.56.252.7:8080/InfoLoad/rest/InfoService/melPieInfo?data=data',  
+            dataType: "jsonp",  
+        //  contentType: "application/x-www-form-urlencoded",  
+            jsonp: "callback",
+        //  cache : false,  
+            error:function(){alert("Error")},  
+            success: function(obj){ 
+                options.series[0].data[0].y = obj[0];
+                options.series[0].data[1].y = obj[1];
+                options.series[0].data[2].y = obj[2];
+       			 var chart = new Highcharts.Chart(options);
+            }       
+        });  
+});
+</script>
+
+<!-- Pie Syd -->
+<script type="text/javascript">
+	$(document).ready(function() {
+
+    var options = {
+        chart: {
+        	renderTo: 'piechartsyd',
+        	plotBackgroundColor: null,
+        	plotBorderWidth: null,
+        	plotShadow: false,
+        	type: 'pie'
+    	},
+    	title: {
+        	text: 'Sentiment Analysis in Sydney'
+    	},
+    	tooltip: {
+        	pointFormat: '<b>{point.y}</b>'
+    	},
+    	plotOptions: {
+        	pie: {
+            	allowPointSelect: true,
+            	cursor: 'pointer',
+            	dataLabels: {
+                	enabled: true,
+                	format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                	style: {
+                    	color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                	}
+            	}
+        	}
+    	},
+        series: [{
+        	name: 'Sydney',
+        	colorByPoint: true,
+        	data: [{
+            	name: 'Positive',
+            	sliced: true,
+            	selected: true
+        	}, {
+            	name: 'Negative',
+        	}, {
+            	name: 'Neutral',
+        	}]
+
+        }]
+    };
+
+    $.ajax({  
+            type: 'GET',  
+        //  async:false,              
+            url: 'http://130.56.252.7:8080/InfoLoad/rest/InfoService/sydPieInfo?data=data',  
+            dataType: "jsonp",  
+        //  contentType: "application/x-www-form-urlencoded",  
+            jsonp: "callback",
+        //  cache : false,  
+            error:function(){alert("Error")},  
+            success: function(obj){ 
+                options.series[0].data[0].y = obj[0];
+                options.series[0].data[1].y = obj[1];
+                options.series[0].data[2].y = obj[2];
+       			 var chart = new Highcharts.Chart(options);
+            }       
+        });  
+});
+</script>
+
+<!-- Pie Bri -->
+<script type="text/javascript">
+	$(document).ready(function() {
+
+    var options = {
+        chart: {
+        	renderTo: 'piechartbri',
+        	plotBackgroundColor: null,
+        	plotBorderWidth: null,
+        	plotShadow: false,
+        	type: 'pie'
+    	},
+    	title: {
+        	text: 'Sentiment Analysis in Brisbane'
+    	},
+    	tooltip: {
+        	pointFormat: '<b>{point.y}</b>'
+    	},
+    	plotOptions: {
+        	pie: {
+            	allowPointSelect: true,
+            	cursor: 'pointer',
+            	dataLabels: {
+                	enabled: true,
+                	format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                	style: {
+                    	color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                	}
+            	}
+        	}
+    	},
+        series: [{
+        	name: 'Brisbane',
+        	colorByPoint: true,
+        	data: [{
+            	name: 'Positive',
+            	sliced: true,
+            	selected: true
+        	}, {
+            	name: 'Negative',
+        	}, {
+            	name: 'Neutral',
+        	}]
+
+        }]
+    };
+
+    $.ajax({  
+            type: 'GET',  
+        //  async:false,              
+            url: 'http://130.56.252.7:8080/InfoLoad/rest/InfoService/briPieInfo?data=data',  
+            dataType: "jsonp",  
+        //  contentType: "application/x-www-form-urlencoded",  
+            jsonp: "callback",
+        //  cache : false,  
+            error:function(){alert("Error")},  
+            success: function(obj){ 
+                options.series[0].data[0].y = obj[0];
+                options.series[0].data[1].y = obj[1];
+                options.series[0].data[2].y = obj[2];
+       			 var chart = new Highcharts.Chart(options);
+            }       
+        });  
+});
+</script>
+
+<!-- Pie Ade -->
+<script type="text/javascript">
+	$(document).ready(function() {
+
+    var options = {
+        chart: {
+        	renderTo: 'piechartade',
+        	plotBackgroundColor: null,
+        	plotBorderWidth: null,
+        	plotShadow: false,
+        	type: 'pie'
+    	},
+    	title: {
+        	text: 'Sentiment Analysis in Adelaide'
+    	},
+    	tooltip: {
+        	pointFormat: '<b>{point.y}</b>'
+    	},
+    	plotOptions: {
+        	pie: {
+            	allowPointSelect: true,
+            	cursor: 'pointer',
+            	dataLabels: {
+                	enabled: true,
+                	format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                	style: {
+                    	color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                	}
+            	}
+        	}
+    	},
+        series: [{
+        	name: 'Adelaide',
+        	colorByPoint: true,
+        	data: [{
+            	name: 'Positive',
+            	sliced: true,
+            	selected: true
+        	}, {
+            	name: 'Negative',
+        	}, {
+            	name: 'Neutral',
+        	}]
+
+        }]
+    };
+
+    $.ajax({  
+            type: 'GET',  
+        //  async:false,              
+            url: 'http://130.56.252.7:8080/InfoLoad/rest/InfoService/adePieInfo?data=data',  
+            dataType: "jsonp",  
+        //  contentType: "application/x-www-form-urlencoded",  
+            jsonp: "callback",
+        //  cache : false,  
+            error:function(){alert("Error")},  
+            success: function(obj){ 
+                options.series[0].data[0].y = obj[0];
+                options.series[0].data[1].y = obj[1];
+                options.series[0].data[2].y = obj[2];
+       			 var chart = new Highcharts.Chart(options);
+            }       
+        });  
+});
+</script>
+
+<!-- Pie Per -->
+<script type="text/javascript">
+	$(document).ready(function() {
+
+    var options = {
+        chart: {
+        	renderTo: 'piechartper',
+        	plotBackgroundColor: null,
+        	plotBorderWidth: null,
+        	plotShadow: false,
+        	type: 'pie'
+    	},
+    	title: {
+        	text: 'Sentiment Analysis in Perth'
+    	},
+    	tooltip: {
+        	pointFormat: '<b>{point.y}</b>'
+    	},
+    	plotOptions: {
+        	pie: {
+            	allowPointSelect: true,
+            	cursor: 'pointer',
+            	dataLabels: {
+                	enabled: true,
+                	format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                	style: {
+                    	color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                	}
+            	}
+        	}
+    	},
+        series: [{
+        	name: 'Perth',
+        	colorByPoint: true,
+        	data: [{
+            	name: 'Positive',
+            	sliced: true,
+            	selected: true
+        	}, {
+            	name: 'Negative',
+        	}, {
+            	name: 'Neutral',
+        	}]
+
+        }]
+    };
+
+    $.ajax({  
+            type: 'GET',  
+        //  async:false,              
+            url: 'http://130.56.252.7:8080/InfoLoad/rest/InfoService/perPieInfo?data=data',  
+            dataType: "jsonp",  
+        //  contentType: "application/x-www-form-urlencoded",  
+            jsonp: "callback",
+        //  cache : false,  
+            error:function(){alert("Error")},  
+            success: function(obj){ 
+                options.series[0].data[0].y = obj[0];
+                options.series[0].data[1].y = obj[1];
+                options.series[0].data[2].y = obj[2];
+       			 var chart = new Highcharts.Chart(options);
+            }       
+        });  
+});
+</script>
+
+<!-- Line AU Time-->
+<script type="text/javascript">
+	$(document).ready(function() {
+
+    var options = {
+        chart: {
+        	renderTo: 'linechartau',
+        	type: 'spline'
+    	},
+
+    	title: {
+        	text: 'Twitter in different Time'
+    	},
+
+    	yAxis: {
+        	title: {
+            	text: 'Number of Twitter'
+        	}
+    	},
+    	legend: {
+        	layout: 'vertical',
+        	align: 'right',
+        	verticalAlign: 'middle'
+    	},
+
+    	xAxis: {
+        	categories: ['00:00-03:00', '03:00-06:00', '06:00-09:00', '09:00-12:00', '12:00-15:00', '15:00-18:00', '18:00-21:00', '21:00-24:00']
+    	},
+
+    	series: [{
+        	name: 'Melbourne',
+    	}, {
+        	name: 'Sydney',
+    	}, {
+        	name: 'Brisbane',
+    	}, {
+        	name: 'Adelaide',
+    	}, {
+        	name: 'Perth',
+    	}]
+    	
+    };
+
+    $.ajax({  
+            type: 'GET',  
+        //  async:false,              
+            url: 'http://130.56.252.7:8080/InfoLoad/rest/InfoService/auLineInfo?data=data',  
+            dataType: "jsonp",  
+        //  contentType: "application/x-www-form-urlencoded",  
+            jsonp: "callback",
+        //  cache : false,  
+            error:function(){alert("Error")},  
+            success: function(obj){ 
+                options.series[0].data = obj[0];
+                options.series[1].data = obj[1];
+                options.series[2].data = obj[2];
+                options.series[3].data = obj[3];
+                options.series[4].data = obj[4];
+       			var chart = new Highcharts.Chart(options);
+            }       
+        });  
+});
+</script>
+
+<!-- Line Positive and GDP -->
+<script type="text/javascript">
+	$(document).ready(function() {
+
+    var options = {
+        chart: {
+        	renderTo: 'linechartGDP',
+        	type: 'spline'
+    	},
+
+    	title: {
+        	text: 'Sentiment and Average Annual Salary'
+    	},
+
+    	yAxis: {
+        	title: {
+            	text: ''
+        	}
+    	},
+    	legend: {
+        	layout: 'vertical',
+        	align: 'right',
+        	verticalAlign: 'middle'
+    	},
+
+    	xAxis: {
+        	categories: ['Melbourne', 'Sydney', 'Brisbane', 'Perth', 'Adelaide']
+    	},
+
+    	series: [{
+        	name: 'Positive',
+    	}, {
+        	name: 'Negative',
+    	}, {
+        	name: 'GDP',
+    	}]
+    	
+    };
+
+    $.ajax({  
+            type: 'GET',  
+        //  async:false,              
+            url: 'http://130.56.252.7:8080/InfoLoad/rest/InfoService/auLineGDPInfo?data=data',  
+            dataType: "jsonp",  
+        //  contentType: "application/x-www-form-urlencoded",  
+            jsonp: "callback",
+        //  cache : false,  
+            error:function(){alert("Error")},  
+            success: function(obj){ 
+                options.series[0].data = obj[0];
+                options.series[1].data = obj[1];
+                options.series[2].data = obj[2];
+       			var chart = new Highcharts.Chart(options);
+            }       
+        });  
+});
+</script>
+
+<!-- Pie Platform -->
+<script type="text/javascript">
+	$(document).ready(function() {
+
+    var options = {
+        chart: {
+        	renderTo: 'piechartplatform',
+        	plotBackgroundColor: null,
+        	plotBorderWidth: null,
+        	plotShadow: false,
+        	type: 'pie'
+    	},
+    	title: {
+        	text: 'Twitter from Different Platform'
+    	},
+    	tooltip: {
+        	pointFormat: '<b>{point.y}</b>'
+    	},
+    	plotOptions: {
+        	pie: {
+            	allowPointSelect: true,
+            	cursor: 'pointer',
+            	dataLabels: {
+                	enabled: true,
+                	format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                	style: {
+                    	color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                	}
+            	}
+        	}
+    	},
+        series: [{
+        	colorByPoint: true,
+        	data: [{
+            	name: 'IOS/iphone',
+            	sliced: true,
+            	selected: true
+        	}, {
+            	name: 'IOS/ipad',
+        	},{
+            	name: 'Android',
+        	},{
+            	name: 'FourSquare',
+        	},{
+            	name: 'Instagram',
+        	},{
+            	name: 'Other',
+        	}]
+
+        }]
+    };
+
+    $.ajax({  
+            type: 'GET',  
+        //  async:false,              
+            url: 'http://130.56.252.7:8080/InfoLoad/rest/InfoService/platformPieInfo?data=data',  
+            dataType: "jsonp",  
+        //  contentType: "application/x-www-form-urlencoded",  
+            jsonp: "callback",
+        //  cache : false,  
+            error:function(){alert("Error")},  
+            success: function(obj){ 
+                options.series[0].data[0].y = obj[0];
+                options.series[0].data[1].y = obj[1];
+                options.series[0].data[2].y = obj[2];
+                options.series[0].data[3].y = obj[3];
+                options.series[0].data[4].y = obj[4];
+                options.series[0].data[5].y = obj[5];
+       			 var chart = new Highcharts.Chart(options);
+            }       
+        });  
+});
+</script>
+
+<!-- Pie Platform sales 2014-2015 -->
+<script type="text/javascript">
+	$(document).ready(function() {
+
+    var options = {
+        chart: {
+        	renderTo: 'piechartsales',
+        	plotBackgroundColor: null,
+        	plotBorderWidth: null,
+        	plotShadow: false,
+        	type: 'pie'
+    	},
+    	title: {
+        	text: 'Activated Smart Device in 2014-2015(AU)'
+    	},
+    	tooltip: {
+        	pointFormat: '<b>{point.y}</b>'
+    	},
+    	plotOptions: {
+        	pie: {
+            	allowPointSelect: true,
+            	cursor: 'pointer',
+            	dataLabels: {
+                	enabled: true,
+                	format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                	style: {
+                    	color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                	}
+            	}
+        	}
+    	},
+        series: [{
+        	colorByPoint: true,
+        	data: [{
+            	name: 'IOS',
+            	sliced: true,
+            	selected: true
+        	}, {
+            	name: 'Android',
+        	}, {
+            	name: 'Other',
+        	}]
+
+        }]
+    };
+
+    $.ajax({  
+            type: 'GET',  
+        //  async:false,              
+            url: 'http://130.56.252.7:8080/InfoLoad/rest/InfoService/platformSalesPieInfo?data=data',  
+            dataType: "jsonp",  
+        //  contentType: "application/x-www-form-urlencoded",  
+            jsonp: "callback",
+        //  cache : false,  
+            error:function(){alert("Error")},  
+            success: function(obj){ 
+                options.series[0].data[0].y = obj[0];
+                options.series[0].data[1].y = obj[1];
+                options.series[0].data[2].y = obj[2];
+       			 var chart = new Highcharts.Chart(options);
+            }       
+        });  
+});
+</script>
+	</body>
+</html>
