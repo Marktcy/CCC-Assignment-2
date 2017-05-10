@@ -16,6 +16,7 @@ The file included here divided into few sub folder:
 1. Java program which included Stream API, Search API, Nectar Handler and Sentiment Analysis
 2. Ansible used for auto deployment
 3. Website Application used to describe analysis
+4. Library used for all the program
 
 Library used:
 1. LightCouch
